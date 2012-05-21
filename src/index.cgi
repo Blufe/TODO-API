@@ -27,7 +27,7 @@ my $MODE_UPDATE = "変更";
 my $MODE_DELETE = "削除";
 my $mode    = undef;
 my $connect = undef;
-my @results   = undef;
+my @results   = undef; # TODOデータ
 my @q_results = undef;
 
 my $q_user  = undef;
@@ -54,7 +54,7 @@ $dbh = &mysql::init($dbname, $table, $user, $passwd, $host);
 $connect = defined($dbh);
 
 $mode   = $CGIpm->param('mode');
-$q_user = $CGIpm->escapeHTML($user);
+$q_user = $CGIpm->escapeHTML($user); 
 @rows   = &mysql::rowList($dbh, $table, "id");
 @cols   = &mysql::colList($dbh, $table);
 
@@ -76,6 +76,7 @@ switch ($mode) {
     }
 }    
 
+# データベース操作
 @results = &DBexec($mode, $dbh, $table, $user, $input_val, $input_num, \@rows);
 @rows    = &mysql::rowList($dbh, $table, "id");
 @cols    = &mysql::colList($dbh, $table);
@@ -93,8 +94,10 @@ if ($connect) {
 
 &show($script, $connect, $mode, \@cols, \@q_results);
 
+# データベースに切断
 &mysql::close($dbh);
 
+# htmlフッター部分
 print $CGIpm->end_html();
 
 exit 0;
@@ -186,7 +189,7 @@ sub menu_db { # データベースに接続できた
 	$CGIpm->start_form({'-action'=>"$_script", '-method'=>'post'}),
 	$CGIpm->hidden({'-name'=>'user', '-value'=>"$_q_user"}),
 	$CGIpm->hidden({'-name'=>'pass', '-value'=>"$_passwd"}),
-	$CGIpm->textfield({'-name'=>'input_val','-size'=>'30'}),
+	$CGIpm->textfield({'-name'=>'input_val','-value'=>'','-size'=>'30'}),
 	$CGIpm->submit({'-name'=>'mode', '-value'=>"$MODE_INSERT"}),
 	$CGIpm->br(),
 	"No.",
