@@ -1,7 +1,7 @@
 package mysql;
 
 sub init {
-    my ($dbname, $table, $user, $passwd, $host) = @_;
+    my ($dbname, $user, $passwd, $host) = @_;
     my $dbh = DBI -> connect ("DBI:mysql:$dbname:$host",$user,$passwd);
     return $dbh;
 }
@@ -11,9 +11,9 @@ sub select {
     my @values = @$values_lp;
     my @types  = @$types_lp;
     my $num_values = @values;
-    my @items;
-    my %item;
-    my $name;
+    my @items = undef;
+    my %item  = undef;
+    my $name  = undef;
 
     if (!defined($dbh)) {
 	return @items;
@@ -49,6 +49,7 @@ sub insert {
     my @values = @$values_lp;
     my @types  = @$types_lp;
     my $num_values = @values;
+    my $insert_id;
 
     if (!defined($dbh)) {
 	return 0;
@@ -58,10 +59,11 @@ sub insert {
     for (my $i=0; $i<$num_values; $i++) {
 	$sth->bind_param($i+1, $values[$i], $types[$i]);
     }
-    $sth->execute;
+    $sth->execute();
+    $insert_id = $sth->{mysql_insertid};
     $sth->finish;
 
-    return 1;
+    return $insert_id;
 }
 
 sub delete {

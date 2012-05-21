@@ -15,8 +15,8 @@ my $script = "index.cgi"; # スクリプト名
 my $CGIpm = new CGI;
 $CGIpm->charset("utf-8");
 
-my $dbname = "TESTDB";    # データベース名
-my $table  = "list";      # テーブル名
+my $dbname = "TODODB";    # データベース名
+my $table  = "todo";      # テーブル名
 my $host   = "localhost"; # ホスト
 
 my $user   = &Encode::decode("UTF-8", $CGIpm->param('user'));
@@ -52,12 +52,12 @@ print
 	});
 
 # データベースに接続
-$dbh = &mysql::init($dbname, $table, $user, $passwd, $host);
+$dbh = &mysql::init($dbname, $user, $passwd, $host);
 $connect = defined($dbh);
 
 $mode   = &Encode::decode("UTF-8", $CGIpm->param('mode'));
 $q_user = $CGIpm->escapeHTML($user); 
-@rows   = &mysql::rowList($dbh, $table, "id");
+@rows   = &mysql::rowList($dbh, $table, "t_id");
 @cols   = &mysql::colList($dbh, $table);
 
 switch ($mode) {
@@ -80,11 +80,13 @@ switch ($mode) {
 
 # データベース操作
 @results = &DBexec($mode, $dbh, $table, $user, $input_val, $input_num, \@rows);
-@rows    = &mysql::rowList($dbh, $table, "id");
+@rows    = &mysql::rowList($dbh, $table, "t_id");
 @cols    = &mysql::colList($dbh, $table);
 for (my $i=0, my $num_results=@results; $i<$num_results; $i++) {
-    foreach my $name (%{@results[$i]}) {
-	$q_results[$i]{$name} = &Encode::decode("UTF-8", $CGIpm->escapeHTML($results[$i]{$name}));
+    if (defined($results[$i])) {
+	foreach my $name (%{$results[$i]}) {
+	    $q_results[$i]{$name} = &Encode::decode("UTF-8", $CGIpm->escapeHTML($results[$i]{$name}));
+	}
     }
 }
 
@@ -108,29 +110,32 @@ sub DBexec {
     my ($_mode, $_dbh, $_table, $_user, $_val, $_num, $_rows_lp) = @_;
     my @_rows     = @$_rows_lp;
     my $_num_rows = @_rows;
-    my @values    = undef;
-    my @types     = undef;
-    my @items     = undef;
-    my %wordDB    = undef;
+    my @_values    = undef;
+    my @_types     = undef;
+    my @_items     = undef;
+    my %_wordDB    = undef;
+    my $insert_id  = undef;
 
     # DB操作モード別のアクション
     switch ($_mode) {
 	case "$MODE_INSERT" {
-	    @values = ($_user, $_val);
-	    @types  = (SQL_CHAR,SQL_CHAR);
-	    &mysql::insert($_dbh, $_table, 
-			   "name, memo, date", "?, ?, now()",
-			   \@values, \@types);
-	    %wordDB =  &check($_val);
+	    @_values = ($_user, $_val);
+	    @_types  = (SQL_CHAR,SQL_CHAR);
+	    %_wordDB =  &check_word($_val);
+	    $insert_id = &mysql::insert($_dbh, $_table, 
+					"name, memo, date", "?, ?, now()",
+					\@_values, \@_types);
+	    &register_word($_dbh, $insert_id, \%_wordDB);
 	}
 	case "$MODE_DELETE" { 
 	    for (my $i=0; $i<$_num_rows; $i++) {
 		if ($_rows[$i] eq $_num) {
-		    @values = ($_rows[$i]);
-		    @types  = (SQL_INTEGER);
+		    @_values = ($_rows[$i]);
+		    @_types  = (SQL_INTEGER);
 		    &mysql::delete($_dbh, $_table, 
-				   "id=?",
-				   \@values, \@types);
+				   "t_id=?",
+				   \@_values, \@_types);
+		    $insert_id = $_rows[$i];
 		    last;
 		}
 	    }
@@ -138,21 +143,58 @@ sub DBexec {
 	case "$MODE_UPDATE" { 
 	    for (my $i=0; $i<$_num_rows; $i++) {
 		if ($_rows[$i] eq $_num) {
-		    @values = ($_val, $_rows[$i]);
-		    @types  = (SQL_CHAR, SQL_INTEGER);
+		    @_values = ($_val, $_rows[$i]);
+		    @_types  = (SQL_CHAR, SQL_INTEGER);
+		    %_wordDB =  &check($_val);
 		    &mysql::update($_dbh, $_table,
-				   "memo=?", "id=?",
-				   \@values, \@types);
+				   "memo=?", "t_id=?",
+				   \@_values, \@_types);
+		    $insert_id = $_rows[$i];
+		    &register_word($_dbh, $insert_id, \%_wordDB);
 		    last;
 		}
 	    }
 	}
     }
-    @items = &mysql::select($_dbh, $_table, 
-			    "id, name, memo, date", "1", 
-			    \@values, \@types);
+    @_items = &mysql::select($_dbh, $_table, 
+			    "t_id, name, memo, date", "1", 
+			    \@_values, \@_types);
     
-    return @items;
+    return @_items;
+}
+
+sub register_word {
+    my ($_dbh, $_t_id, $_wordDB_lp) = @_;
+    my $_word_table  = "word";
+    my $_list_table  = "list";
+    my %_wordDB = %{$_wordDB_lp};
+    my @_word_values = undef;
+    my @_word_types  = undef;
+    my @_list_values = undef;
+    my @_list_types  = undef;
+
+    $_list_values[0] = $_t_id;
+    $_list_types[0]  = SQL_INTEGER;
+    foreach my $type (%_wordDB) {
+	$_word_values[0] = $type;
+	$_word_types[0]  = SQL_CHAR;
+
+	foreach (@{$_wordDB{$type}}) {
+	    $_word_values[1] = $_;
+	    $_word_types[1]  = SQL_CHAR;
+	    my $_w_id = &mysql::insert($_dbh, $_word_table, 
+				      "type, word", "?, ?",
+				      \@_word_values, \@_word_types);
+
+	    if ($_w_id) {
+		$_list_values[1] = $_w_id;
+		$_list_types[1]  = SQL_INTEGER;
+		&mysql::insert($_dbh, $_list_table, 
+			       "t_id, w_id", "?, ?",
+			       \@_list_values, \@_list_types);
+	    }
+	}
+    }
 }
 
 sub check_word {
@@ -173,7 +215,7 @@ sub check_word {
     $escape = undef;
 
     # １文ならother
-    if (($word != /\\/) && ($num_words == 1)) {
+    if (($_memo !~ /\\/) && ($num_words == 1)) {
 	@other = @words;
     } else {
 	# 分けた短文を参照
@@ -247,10 +289,10 @@ sub check_word {
     print "Vs : @V_words<br>";
     print "Os : @O_words<br>";
     print "Ot : @other<br>";
-    $wordDB{"S"}     = @S_words;
-    $wordDB{"V"}     = @V_words;
-    $wordDB{"O"}     = @O_words;
-    $wordDB{"other"} = @other;
+    $wordDB{"S"}     = [@S_words];
+    $wordDB{"V"}     = [@V_words];
+    $wordDB{"O"}     = [@O_words];
+    $wordDB{"other"} = [@other];
 
     return %wordDB;
 }
@@ -289,7 +331,7 @@ sub menu_db { # データベースに接続できた
 	"Welcome, $_q_user!! ",
 	$CGIpm->submit({'-name'=>'logout', '-value'=>"ログアウト"}),
 	$CGIpm->end_form(),
-	# ----- データベース操作の選択肢 -----
+	# ----- データベース操作の選択肢 ----
 	$CGIpm->start_form({'-action'=>"$_script", '-method'=>'post'}),
 	$CGIpm->hidden({'-name'=>'user', '-value'=>"$_q_user"}),
 	$CGIpm->hidden({'-name'=>'pass', '-value'=>"$_passwd"}),
@@ -322,7 +364,7 @@ sub show {
 	}
 	for (my $i=0; $i<$_num_q_results; $i++) {
 	    $row_html = 
-		$CGIpm->td([$_q_results[$i]{"id"}]).
+		$CGIpm->td([$_q_results[$i]{"t_id"}]).
 		$CGIpm->td([$_q_results[$i]{"name"}]).
 		$CGIpm->td([$_q_results[$i]{"memo"}]).
 		$CGIpm->td([$_q_results[$i]{"date"}]);
