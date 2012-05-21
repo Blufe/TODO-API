@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 use Switch;
+use utf8;
+use Encode; 
 use CGI::Carp qw(fatalsToBrowser);
 use DBI qw(:sql_types);
 use CGI;
@@ -17,8 +19,8 @@ my $dbname = "TESTDB";    # データベース名
 my $table  = "list";      # テーブル名
 my $host   = "localhost"; # ホスト
 
-my $user   = $CGIpm->param('user');
-my $passwd = $CGIpm->param('pass');
+my $user   = &Encode::decode("UTF-8", $CGIpm->param('user'));
+my $passwd = &Encode::decode("UTF-8", $CGIpm->param('pass'));
 my $dbh    = undef;
 
 my $MODE_LOGIN  = "ログイン";
@@ -41,33 +43,33 @@ my $input_num = undef;
 print 
     $CGIpm->header({'-expires'=>'+1m', '-charset'=>'UTF-8'}), 
     $CGIpm->start_html({ 
-			'-title' => "test", 
-			'-lang'  => 'ja', 
-			'-head'  => $CGIpm->meta({
-			    'http-equiv' => 'Content-Type', 
-			    '-content'   => 'text/html; charset=UTF-8' 
-			    }) 
-			});
+	'-title' => "test", 
+	'-lang'  => 'ja', 
+	'-head'  => $CGIpm->meta({
+	    'http-equiv' => 'Content-Type', 
+	    '-content'   => 'text/html; charset=UTF-8' 
+	    }) 
+	});
 
 # データベースに接続
 $dbh = &mysql::init($dbname, $table, $user, $passwd, $host);
 $connect = defined($dbh);
 
-$mode   = $CGIpm->param('mode');
+$mode   = &Encode::decode("UTF-8", $CGIpm->param('mode'));
 $q_user = $CGIpm->escapeHTML($user); 
 @rows   = &mysql::rowList($dbh, $table, "id");
 @cols   = &mysql::colList($dbh, $table);
 
 switch ($mode) {
     case "$MODE_INSERT" {
-	$input_val = $CGIpm->param('input_val');
+	$input_val = &Encode::decode("UTF-8", $CGIpm->param('input_val'));
     }
     case "$MODE_UPDATE" {
-	$input_val = $CGIpm->param('input_val');
-	$input_num = $CGIpm->param('input_num');
+	$input_val = &Encode::decode("UTF-8", $CGIpm->param('input_val'));
+	$input_num = &Encode::decode("UTF-8", $CGIpm->param('input_num'));
     }
     case "$MODE_DELETE" {
-	$input_num = $CGIpm->param('input_num');
+	$input_num = &Encode::decode("UTF-8", $CGIpm->param('input_num'));
     }
     case "$MODE_LOGIN" {
 	if ($connect) {
@@ -82,7 +84,7 @@ switch ($mode) {
 @cols    = &mysql::colList($dbh, $table);
 for (my $i=0, my $num_results=@results; $i<$num_results; $i++) {
     foreach my $name (%{@results[$i]}) {
-	$q_results[$i]{$name} = $CGIpm->escapeHTML($results[$i]{$name});
+	$q_results[$i]{$name} = &Encode::decode("UTF-8", $CGIpm->escapeHTML($results[$i]{$name}));
     }
 }
 
@@ -106,9 +108,10 @@ sub DBexec {
     my ($_mode, $_dbh, $_table, $_user, $_val, $_num, $_rows_lp) = @_;
     my @_rows     = @$_rows_lp;
     my $_num_rows = @_rows;
-    my @values;
-    my @types;
-    my @items;
+    my @values    = undef;
+    my @types     = undef;
+    my @items     = undef;
+    my %wordDB    = undef;
 
     # DB操作モード別のアクション
     switch ($_mode) {
@@ -118,6 +121,7 @@ sub DBexec {
 	    &mysql::insert($_dbh, $_table, 
 			   "name, memo, date", "?, ?, now()",
 			   \@values, \@types);
+	    %wordDB =  &check($_val);
 	}
 	case "$MODE_DELETE" { 
 	    for (my $i=0; $i<$_num_rows; $i++) {
@@ -149,6 +153,106 @@ sub DBexec {
 			    \@values, \@types);
     
     return @items;
+}
+
+sub check_word {
+    my ($_memo) = @_;
+    my $word    = undef;
+    my $escape  = undef;
+    my @words   = undef;
+    my (@S_words, @V_words, @O_words);
+    my ($num_words, $num_S_words, $num_V_words, $num_O_words, $num_other);
+    my ($S_word, $V_word, $O_word);
+    my @other   = undef;
+    my %wordDB  = undef;
+
+    # 全半角スペースの除去
+    @words = split(/[\s]+/,$_memo);
+    $num_words = @words;
+    $num_S_words = $num_V_words = $num_O_words = $num_other = 0;
+    $escape = undef;
+
+    # １文ならother
+    if (($word != /\\/) && ($num_words == 1)) {
+	@other = @words;
+    } else {
+	# 分けた短文を参照
+	foreach (@words) {
+	    $word = $_;
+	    
+	    # 短文を初めに現れた\で２分割
+	    while ($word =~ /\\/) {
+		# 前半部の処理
+		$word = "$`";
+		if ("$word") {
+		    switch ($escape) {
+			case "S" {    
+			    $S_words[$num_S_words++] = "$word";
+			}
+			case "V" {
+			    $V_words[$num_V_words++] = "$word";
+			}
+			case "O" {
+			    $O_words[$num_O_words++] = "$word";
+			}
+			elsif ($num_O_words == 0) {
+			    $O_words[$num_O_words++] = "$word";
+			}
+			elsif ($num_V_words == 0) {
+			    $V_words[$num_V_words++] = "$word";
+			}
+			else {
+			    $other[$num_other++] = "$word";
+			}
+		    }
+		    $escape = undef;
+		}
+
+		# 後半部を短文として参照
+		$word   = "$'";
+		if ($word =~ /^[svoSVO]/) {
+		    $escape = "\U$&\E";
+		    $word   = "$'";
+		} else {
+		    $escape = undef;
+		}
+	    }
+	    if ("$word") {
+		switch ($escape) {
+		    case "S" {    
+			$S_words[$num_S_words++] = "$word";
+		    }
+		    case "V" {
+			$V_words[$num_V_words++] = "$word";
+		    }
+		    case "O" {
+			$O_words[$num_O_words++] = "$word";
+		    }
+		    elsif ($num_O_words == 0) {
+			$O_words[$num_O_words++] = "$word";
+		    }
+		    elsif ($num_V_words == 0) {
+			$V_words[$num_V_words++] = "$word";
+		    }
+		    else {
+			$other[$num_other++] = "$word";
+		    }
+		}
+		$escape = undef;
+	    }
+	    # \が短文の中に無くなったら次の短文を参照
+	}
+    }
+    print "Ss : @S_words<br>";
+    print "Vs : @V_words<br>";
+    print "Os : @O_words<br>";
+    print "Ot : @other<br>";
+    $wordDB{"S"}     = @S_words;
+    $wordDB{"V"}     = @V_words;
+    $wordDB{"O"}     = @O_words;
+    $wordDB{"other"} = @other;
+
+    return %wordDB;
 }
 
 sub menu_login {
