@@ -1,0 +1,137 @@
+
+
+
+
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'USER_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `USER_LIST`;
+		
+CREATE TABLE `USER_LIST` (
+  `u_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(40) NOT NULL,
+  `passwd` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`u_id`),
+  UNIQUE KEY (`name`, `passwd`)
+);
+
+-- ---
+-- Table 'WORD_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `WORD_LIST`;
+		
+CREATE TABLE `WORD_LIST` (
+  `w_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `word` VARCHAR NOT NULL,
+  PRIMARY KEY (`w_id`),
+  UNIQUE KEY (`word`)
+);
+
+-- ---
+-- Table 'PARTICLE_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `PARTICLE_LIST`;
+		
+CREATE TABLE `PARTICLE_LIST` (
+  `p_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `word` VARCHAR NOT NULL,
+  `t_id` INTEGER NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY (`word`, `t_id`)
+);
+
+-- ---
+-- Table 'TYPE_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `TYPE_LIST`;
+		
+CREATE TABLE `TYPE_LIST` (
+  `t_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR NOT NULL,
+  PRIMARY KEY (`t_id`),
+  UNIQUE KEY (`type`)
+);
+
+-- ---
+-- Table 'ELEMENT_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `ELEMENT_LIST`;
+		
+CREATE TABLE `ELEMENT_LIST` (
+  `e_id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `t_id` INTEGER NOT NULL,
+  `w_id` INTEGER NOT NULL,
+  `s_id` INTEGER NOT NULL,
+  PRIMARY KEY (`e_id`)
+);
+
+-- ---
+-- Table 'SENTENCE_LIST'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `SENTENCE_LIST`;
+		
+CREATE TABLE `SENTENCE_LIST` (
+  `s_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `text` VARCHAR NOT NULL,
+  `new field` DATETIME NOT NULL DEFAULT '0000000000',
+  `u_id` INTEGER NOT NULL,
+  PRIMARY KEY (`s_id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+ALTER TABLE `PARTICLE_LIST` ADD FOREIGN KEY (t_id) REFERENCES `TYPE_LIST` (`t_id`);
+ALTER TABLE `ELEMENT_LIST` ADD FOREIGN KEY (t_id) REFERENCES `TYPE_LIST` (`t_id`);
+ALTER TABLE `ELEMENT_LIST` ADD FOREIGN KEY (w_id) REFERENCES `WORD_LIST` (`w_id`);
+ALTER TABLE `ELEMENT_LIST` ADD FOREIGN KEY (s_id) REFERENCES `SENTENCE_LIST` (`s_id`);
+ALTER TABLE `SENTENCE_LIST` ADD FOREIGN KEY (u_id) REFERENCES `USER_LIST` (`u_id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `USER_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `WORD_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `PARTICLE_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `TYPE_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `ELEMENT_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `SENTENCE_LIST` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `USER_LIST` (`u_id`,`name`,`passwd`) VALUES
+-- ('','','');
+-- INSERT INTO `WORD_LIST` (`w_id`,`word`) VALUES
+-- ('','');
+-- INSERT INTO `PARTICLE_LIST` (`p_id`,`word`,`t_id`) VALUES
+-- ('','','');
+-- INSERT INTO `TYPE_LIST` (`t_id`,`type`) VALUES
+-- ('','');
+-- INSERT INTO `ELEMENT_LIST` (`e_id`,`t_id`,`w_id`,`s_id`) VALUES
+-- ('','','','');
+-- INSERT INTO `SENTENCE_LIST` (`s_id`,`text`,`new field`,`u_id`) VALUES
+-- ('','','','');
+
