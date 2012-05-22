@@ -1,0 +1,101 @@
+@charset "utf-8";
+
+body {
+	background-color : rgba(60,60,60,1);
+}
+
+div#container {
+	height  : 700px;
+	width   : 500px;
+	border  :  5px solid black;
+	background-color : rgba(90,90,90,1);
+	overflow:hidden;
+}
+
+div#header {
+	height : 50px;
+	text-align : center;	
+	background-color : rgba(100,0,0,1);
+	overflow:hidden;
+}
+
+div#main {	
+	height : 630px;
+	width  : 500px;
+	background-color : rgba(0,0,100,1);
+	float  : left;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+div#line {
+	margin-top : 2px;
+	height : 50px;
+	width  : 480px;
+	background-color : rgba(0,100,0,1);
+	float  : left;
+	overflow:hidden;
+}
+
+div#tab {
+	margin-top  : 3px;
+	margin-left : 2px;
+	height : 44px;
+	width  : 30px;	
+	text-align : left;
+	background-color : rgba(100,100,0,1);
+	float  : left;
+}
+
+div#memo {
+	margin-right : 5px;
+	height : 50px;
+	width  : 440px;	
+	text-align : left;
+	background-color : rgba(0,100,100,1);
+	float  : right;
+}
+
+div#text {
+	margin-top  : 15px;
+	margin-left : 3px;
+	height : 20px;
+	width  : 375px;
+	font-size : 20px;
+	background-color : rgba(100,0,100,1);
+	float  : left;
+	overflow:hidden;	
+}
+
+div#setting {
+	margin-top  : 2px;
+	margin-right : 3px;
+	height : 46px;
+	width  : 57px;
+	text-align : center;	
+	background-color : rgba(100,100,100,1);
+	float  : right;
+	overflow:hidden;
+}
+
+
+div#footer {
+	height : 440px
+	width  : 400px
+	text-align : left;
+	background-color : rgba(0,0,255,1);
+}
+
+body h2.title {
+    background: -moz-linear-gradient(center top , #2772C5, #234487) repeat scroll 0 0 transparent;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 3px 3px #DFDFDF;
+    clear: both;
+    display: block;
+    font-size: 160%;
+    font-weight: bold;
+    line-height: 1.6;
+    margin: 0;
+    padding: 8px 10px;
+    text-shadow: 1px 1px 3px #202020;
+}

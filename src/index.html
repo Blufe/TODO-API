@@ -7,18 +7,56 @@
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <title>HTML SAMPLE</title>
-    <link rel="stylesheet" href="./skin/common.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/common.css" type="text/css" media="all" />
 </head>
 
 <body>
 <div id="container">
-    <div id="header"><!-- ヘッダー -->
-    TEST
+    <div id="header">
     </div>
-    <div id="footer"><!-- フッターー -->
+
+    <div id="main">
+    <script type="text/javascript">
+    <!--
+    for (i=0; i<13; i++) {
+        document.writeln("<div id='line'>");
+        document.writeln("<div id='tab'>・");
+	document.writeln("<\/div>");    
+        document.writeln("<div id='memo'>");
+        document.writeln("<div id='text'>");
+	document.writeln("<\/div>");
+        document.writeln("<div id='setting'>");
+	document.writeln("<button onclick='alert("+'"テスト"'+")'>テスト<\/button>");
+	document.writeln("<button onclick='alert("+'"テスト"'+")'>テスト<\/button>");
+	document.writeln("<\/div>");
+	document.writeln("<\/div>");
+	document.writeln("<\/div>");    
+	}
+    //-->
+    </script>
+    <!--
+        <div id="line">
+	    <div id="tab">
+	    
+	    </div>
+	    <div id="memo">
+	        <div id="text">
+		ああああああああああああああああああ
+		</div>
+		
+		<div id="setting">
+		    <button onclick="alert('テスト')">テスト</button><br>
+		    <button onclick="alert('テスト')">テスト</button>
+		</div>
+	    </div>
+	</div>--> 
+    </div>
+    
+    <div id="footer">
 
     </div>
 </div>
+
 </body>
 
 </html>
