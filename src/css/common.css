@@ -55,6 +55,49 @@ div#main {
 	border-radius: 5px;
 }
 
+form#loginForm, form#registerForm {
+	margin-top  : 10px;
+	margin-left : 10px;
+	width:800px;
+	border:none;
+	text-align: left;
+	background-color:rgba(0,0,0,0);
+	color:#eee;
+	font-size:30px;
+	text-shadow: 0px 6px 2px #222;	
+}
+
+form#loginForm h1, form#registerForm h1 {
+	text-align:center;
+	margin-left : 0px;
+}
+
+input#useridForm, input#passwdForm {
+	font-size:30px;
+	width:500px;
+}
+
+input#loginSubmit, input#registerSubmit, input#changeForm_login, input#changeForm_register {
+	font-size:30px;
+}
+
+div#loginResult, div#registerResult {
+	color:#d00;
+	text-align:center;
+}
+
+input#changeForm_register, input#changeForm_login {
+	text-align:left;
+	margin-left : 10px;
+}
+
+form#loginForm, input#changeForm_register {
+	display:block;
+}
+
+form#registerForm, input#changeForm_login {
+	display:none;
+}
 
 .line {
   list-style-type: none;
