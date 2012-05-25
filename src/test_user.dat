@@ -1,0 +1,11 @@
+DBNAME: TODODB
+HOST: localhost
+USER: SCI01449
+PASS: DBPW#0511loki
+
+テーブル
+USER_LIST（ユーザー情報用）
+SENTENCE_LIST（TODOリスト）
+WORD_LIST（TODOから切りただした単語）
+TYPE_LIST（単語に持たせる属性（SVO））
+PARTICLE_LIST（TODOから単語を切り出すための特殊文字）
