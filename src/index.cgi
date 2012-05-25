@@ -10,6 +10,7 @@ use DBI qw(:sql_types);
 use CGI;
 
 require './lib/mysql.pl';
+require './lib/model.pm';
 
 my $script = "index.cgi"; # スクリプト名
 my $CGIpm = new CGI;

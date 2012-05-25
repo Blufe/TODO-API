@@ -8,6 +8,24 @@ $(document).ready(function(){
 		}
 	});
 
-	$("div#container").draggable({});
+//	$("div#container").draggable({});
 });
 
+function loadXMLFile(fName)
+{
+	httpObj = createXMLHttpRequest(displayData);
+	if (httpObj) {
+		httpObj.open("GET",fName,true);
+		httpObj.send(null);
+	}
+}
+
+function displayData()
+{
+	if ((httpObj.readyState == 4) && 
+	    (httpObj.status == 200)) {
+		$("result").innerHTML = httpObj.responseXML;
+	} else {
+		$("result").innerHTML = "<b>Loading...</b>";
+	}
+}
