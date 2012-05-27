@@ -6,8 +6,8 @@ body {
 }
 
 div#container {
-	height  : 600px;
-	width   : 800px;
+	height  : 650px;
+	width   : 1000px;
 	overflow:hidden;
 
 	color: #fff;
@@ -38,10 +38,10 @@ div#header span{
 }
 
 div#main {	
-	height : 530px;
-	width  : 800px;
+	height : 550px;
+	width  : 1000px;
 	float  : left;
-	overflow-y:auto;
+	overflow-y:hidden;
 	overflow-x:hidden;
 
 	background: rgba(80,80,80,1);
@@ -55,16 +55,80 @@ div#main {
 	border-radius: 5px;
 }
 
+form#dataForm {
+	display:none;
+}
+
+form#loginForm, form#registerForm {
+	margin-top  : 10px;
+	margin-left : 10px;
+	width:990px;
+	border:none;
+	text-align: left;
+	background-color:rgba(0,0,0,0);
+	color:#eee;
+	font-size:30px;
+	text-shadow: 0px 6px 2px #222;	
+}
+
+form#loginForm h1, form#registerForm h1 {
+	text-align:center;
+	margin-left : 0px;
+}
+
+input#useridForm, input#passwdForm {
+	font-size:30px;
+	width:650px;
+}
+
+input#decisionButton {
+	font-size:30px;
+}
+
+div#connectionResult {
+	color:#d00;
+	text-align:center;
+}
+
+button#changeForm {
+	font-size:30px;
+	text-align:center;
+	margin-left : 10px;
+}
+
+form#loginForm {
+	display:block;
+}
+
+form#registerForm {
+	display:none;
+}
+
+form#listForm {
+	height : 550px;
+	width  : 1000px;
+	float  : left;
+	margin : none;
+	padding: none;
+	border : none;
+	background: rgba(0,0,0,0);
+	overflow-x:hidden;
+	overflow-y:auto;
+
+	display:none;
+}
 
 .line {
-  list-style-type: none;
-  margin  : 0;
-  padding : 0;
+	width  : 1000px;
+
+	list-style-type: none;
+	margin  : 0;
+	padding : 0;
 }
 
 .line li {
-	height : 60px;
-	width  : 780px;
+	height : 90px;
+	width  : 980px;
 	border-left : 20px solid #333;
 	background-color : rgba(80,80,80,0);
 	margin-top    : 1px;
@@ -80,26 +144,65 @@ div#main {
   border-left: 20px solid #d00;
 }
 
-div#memo {
-	height : 60px;
-	width  : 755px;	
+div#outputForm ,div#inputForm {
+	height : 90px;
+	width  : 955px;	
 	text-align : left;
 	float  : left;
 	background-color : rgba(0,0,0,0); 
 }
 
+input#inputSwords, input#inputVwords, input#inputOwords {
+	margin-top  : 10px;
+	margin-left : 15px;
+	width:250px;
+	border:none;
+	background-color:rgba(200,200,200,1);
+	color:#333;
+	font-size:30px;
+}
+
+input#inputDeadline {
+	border:none;
+	width :110px;
+	background-color:rgba(200,200,200,1);
+	color:#333;
+	font-size:20px;
+}
+
+div#inputSubmit {
+	margin-top  : 30px;
+	margin-right : 20px;
+	height : 30px;
+	width  : 80px;
+	text-align : center;	
+	float  : right;
+	overflow:hidden;
+	color : #eee;
+	font-size: 25px;
+
+	box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
+	-webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border: 1px solid rgba(0,0,0,0.5);
+	background-color: rgba(80,80,80,0.25);
+}
+
 div#text {
-	height : 60px;
-	width  : 700px;
+	height : 90px;
+	width  : 900px;
 	background-color : rgba(0,0,0,0); 
 	float  : left;
 	overflow:hidden;
 }
 
-div#text input[type=text] {
+input#todo {
 	margin-top  : 15px;
 	margin-left : 15px;
-	width:670px;
+	width:850px;
 	border:none;
 	background-color:rgba(0,0,0,0);
 	color:#eee;
@@ -107,13 +210,28 @@ div#text input[type=text] {
 	text-shadow: 0px 6px 2px #222;
 }
 
-div#setting {
+div#date {
 	margin-top  : 10px;
+	margin-left : 10px;
+	background-color:rgba(0,0,0,0);
+	color:#eee;
+	font-size:20px;
+}
+
+input#deadline {
+	border:none;
+	width:110px;
+	background-color:rgba(0,0,0,0);
+	color:#eee;
+	font-size:20px;
+}
+
+div#finished {
+	margin-top  : 30px;
 	margin-right : 0px;
 	height : 30px;
 	width  : 31px;
 	text-align : center;	
-	background-color : rgba(0,0,0,0);
 	float  : left;
 	overflow:hidden;
 
@@ -124,13 +242,23 @@ div#setting {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border: 1px solid rgba(0,0,0,0.5);
-	background: rgba(0,255,0,0.25);
+	background-color: rgba(0,255,0,0.25);
+}
 
+div#todoError {
+	height : 120px;
+	width  : 900px;
+	background-color : rgba(0,0,0,0); 
+	float  : left;
+	overflow:hidden;
+	text-align : center;
+	font-size : 30px;
+	color : #d00;
 }
 
 div#footer {
 	height : 15px
-	width  : 800px
+	width  : 1000px
 	text-align : left;
 	background-color : rgba(0,0,255,1);
 }
