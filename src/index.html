@@ -6,15 +6,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <link rel="stylesheet" href="./css/common.css" type="text/css" media="all" />
+
     <link rel="stylesheet" href="./css/jquery-ui-1.8.20.custom.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/class.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/menuForm.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/loginForm.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/listForm.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./css/common.css" type="text/css" media="all" />
+
     <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./js/jquery-ui-1.8.20.custom.min.js"></script>
     <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/CGIRequest.js"></script>
     <script type="text/javascript" src="./js/todoList.js"></script>
     <script type="text/javascript" src="./js/loginForm.js"></script>
     <script type="text/javascript" src="./js/registerForm.js"></script>
-    <script type="text/javascript" src="./js/my.js"></script>
     <title>TODO API</title>
 </head>
 
@@ -22,9 +28,7 @@
 <div id="container">
      <div id="header">
      <span><strong>TO DO</strong></span>
-     <div id="menuForm"><div id="searchMenuButton">＋</div>
-<!--     <div id="updateButton">更新</div> -->
-     </div>
+     <form id="menuForm"><div class="button" id="menuButton">＋</div></form>
      </div>
 
      <div id="main">
@@ -44,22 +48,22 @@
 
      <form id="loginForm" action="input.cgi">
      <h1>ログインフォーム</h1>
-     ユーザ名　　<input id="useridForm" type="text" name="userid", value=""><br>
-     パスワード　<input id="passwdForm" type="password" name="passwd", value="">
+     ユーザ名　　<input id="useridField" type="text" name="userid", value="SCI01449"><br>
+     パスワード　<input id="passwdField" type="password" name="passwd", value="TODO#0511loki">
      <input id="decisionButton" type="submit" value="ログイン"><br><br>
      <font font-size="5px">（パスワードは８文字以上、６４文字以下で入力してください）</font><br><br>
-     <div id="connectionResult"></div><br>
-     <button id="changeForm" value="register" type="button">ユーザ登録はこちら</button>
+     <div id="resultField"></div><br>
+     <button id="changeButton" value="register" type="button">ユーザ登録はこちら</button>
      </form>
      
      <form id="registerForm">
      <h1>ユーザ登録フォーム</h1>
-     ユーザ名　　<input id="useridForm" type="text" name="userid", value=""><br>
-     パスワード　<input id="passwdForm" type="password" name="passwd", value="">
+     ユーザ名　　<input id="useridField" type="text" name="userid", value=""><br>
+     パスワード　<input id="passwdField" type="password" name="passwd", value="">
      <input id="decisionButton" type="submit" value="登録"><br><br>
      <font font-size="5px">（パスワードは８文字以上、６４文字以下で入力してください）</font><br><br>
-     <div id="connectionResult"></div><br>
-     <button id="changeForm" value="login" type="button">戻る方はこちら</button>
+     <div id="resultField"></div><br>
+     <button id="changeButton" value="login" type="button">戻る方はこちら</button>
      </form>
      </div>
 

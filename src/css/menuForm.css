@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+form#menuForm {
+	height : 30px;
+
+	float : right;
+}
+
+div#menuButton {
+	height : 25px;
+	width : 60px;
+	overflow:hidden;
+
+	color : #eee;
+	font-size: 25px;
+	text-align     : center;
+
+	margin-right : 10px;
+	margin-top   : 15px;
+
+	background-color: rgba(80,80,80,0.25);
+}

@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+form#loginForm, form#registerForm {
+	width:990px;
+
+	margin-top  : 10px;
+	margin-left : 10px;
+	border      : none;
+
+	color            : #eee;
+	background-color : rgba(0,0,0,0);
+	font-size        : 30px;
+	text-shadow      : 0px 6px 2px #222;	
+	text-align       : left;
+}
+
+form#loginForm h1, form#registerForm h1 {
+	margin-left : 0px;
+
+	text-align : center;
+}
+
+input#useridField, input#passwdField {
+	width : 650px;
+
+	font-size : 30px;
+}
+
+div#resultField {
+	color      : #d00;
+	font-size  : 30px;
+	text-align : center;
+}
+
+input#decisionButton {
+	font-size : 30px;
+}
+
+button#changeButton {
+	margin-left : 10px;
+
+	font-size  : 30px;
+	text-align : center;
+}
+

@@ -11,13 +11,13 @@ div#container {
 	overflow:hidden;
 
 	color: #fff;
-	padding: 20px;
-	padding-top:15px;
-	padding-bottom:5px;
 	background: rgba(80,80,80,1);
 
+	padding: 20px;
+	padding-top:15px;
 	border: 4px solid #f0f0f0;
 	border-bottom: 5px solid #ccc;
+
 	 /* IE以外なら丸角も！ */
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
@@ -25,56 +25,31 @@ div#container {
 }
 
 div#header {
-	position:static;
 	height : 55px;
 	width   : 1000px;
-	text-align : center;	
-	background-color : rgba(100,0,0,0);
 	overflow:hidden;
+
+	background-color : rgba(0,0,0,0);
+
+	float  : left;
 }
 
-div#header span{
-	margin-left : 160px;
+div#header span {
+	margin-left : 450px;
+
+	color: #888;
 	font-size:40px;
 	font-style:normal;
-	color: #888;
 	text-shadow: 0px 2px 1px #222;
-}
-
-div#menuForm {
-	display : none;
-	height : 30px;
-	margin-top : 10;
-	float : right;
-}
-
-div#searchMenuButton {
-	margin-right : 10px;
-	height : 30px;
-	width : 80px;
 	text-align : center;
-	overflow:hidden;
-	color : #eee;
-	font-size: 25px;
-	float : right;
 
-	box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border: 1px solid rgba(0,0,0,0.5);
-	background-color: rgba(80,80,80,1    );
+	float : left;
 }
 
 div#main {	
-	position:static;
 	height : 550px;
 	width  : 1000px;
-	float  : left;
-	overflow-y:hidden;
-	overflow-x:hidden;
+	overflow:hidden;
 
 	background: rgba(80,80,80,1);
 	border: 3px solid #444;
@@ -85,214 +60,8 @@ div#main {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-}
 
-form#dataForm {
-	display:none;
-}
-
-form#loginForm, form#registerForm {
-	margin-top  : 10px;
-	margin-left : 10px;
-	width:990px;
-	border:none;
-	text-align: left;
-	background-color:rgba(0,0,0,0);
-	color:#eee;
-	font-size:30px;
-	text-shadow: 0px 6px 2px #222;	
-}
-
-form#loginForm h1, form#registerForm h1 {
-	text-align:center;
-	margin-left : 0px;
-}
-
-input#useridForm, input#passwdForm {
-	font-size:30px;
-	width:650px;
-}
-
-input#decisionButton {
-	font-size:30px;
-}
-
-div#connectionResult {
-	color:#d00;
-	text-align:center;
-}
-
-button#changeForm {
-	font-size:30px;
-	text-align:center;
-	margin-left : 10px;
-}
-
-form#loginForm {
-	display:block;
-}
-
-form#registerForm {
-	display:none;
-}
-
-form#listForm {
-	height : 550px;
-	width  : 1000px;
 	float  : left;
-	margin : none;
-	padding: none;
-	border : none;
-	background: rgba(0,0,0,0);
-	overflow-x:hidden;
-	overflow-y:auto;
-
-	display:none;
-}
-
-.line {
-	width  : 1000px;
-
-	list-style-type: none;
-	margin  : 0;
-	padding : 0;
-}
-
-.line li {
-	height : 90px;
-	width  : 980px;
-	border-left : 20px solid #333;
-	background-color : rgba(80,80,80,0);
-	margin-top    : 1px;
-	margin-bottom : 1px;
-	display: block;
-	overflow:hidden;
-	float  : left;
-}
-
-.line li:hover {
-  background-color: #888;
-  color: #d00;
-  border-left: 20px solid #d00;
-}
-
-div#outputForm ,div#inputForm, div#searchForm {
-	height : 90px;
-	width  : 955px;	
-	text-align : left;
-	float  : left;
-	background-color : rgba(0,0,0,0); 
-}
-
-input#inputVwords, input#inputOwords {
-	margin-top  : 10px;
-	margin-left : 15px;
-	border:none;
-	background-color:rgba(200,200,200,1);
-	color:#333;
-	font-size:30px;
-}
-
-input#inputVwords {
-	width:500px;
-}
-
-input#inputOwords {
-	width:250px;
-}
-
-input#inputDeadline {
-	border:none;
-	width :110px;
-	background-color:rgba(200,200,200,0);
-	color:#eee;
-	font-size:20px;
-}
-
-div#inputSubmit, div#updateButton {
-	margin-top : 30px;
-	margin-right : 20px;
-	height : 30px;
-	width : 80px;
-	text-align : center;
-	float : right;
-	overflow:hidden;
-	color : #eee;
-	font-size: 25px;
-
-	box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border: 1px solid rgba(0,0,0,0.5);
-	background-color: rgba(80,80,80,0.25);
-}
-
-div#text {
-	height : 90px;
-	width  : 900px;
-	background-color : rgba(0,0,0,0); 
-	float  : left;
-	overflow:hidden;
-}
-
-input#todo {
-	margin-top  : 15px;
-	margin-left : 15px;
-	width:850px;
-	border:none;
-	background-color:rgba(0,0,0,0);
-	color:#eee;
-	font-size:30px;
-	text-shadow: 0px 6px 2px #222;
-}
-
-div#date {
-	margin-top  : 10px;
-	margin-left : 10px;
-	background-color:rgba(0,0,0,0);
-	color:#eee;
-	font-size:20px;
-}
-
-input#deadline {
-	border:none;
-	width:110px;
-	background-color:rgba(0,0,0,0);
-	color:#eee;
-	font-size:20px;
-}
-
-div#finished {
-	margin-top  : 30px;
-	margin-right : 0px;
-	height : 30px;
-	width  : 31px;
-	text-align : center;	
-	float  : left;
-	overflow:hidden;
-
-	box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border: 1px solid rgba(0,0,0,0.5);
-	background-color: rgba(0,255,0,0.25);
-}
-
-div#todoError {
-	height : 120px;
-	width  : 900px;
-	background-color : rgba(0,0,0,0); 
-	float  : left;
-	overflow:hidden;
-	text-align : center;
-	font-size : 30px;
-	color : #d00;
 }
 
 div#footer {
@@ -300,4 +69,12 @@ div#footer {
 	height : 30px;
 	width  : 1000px;
 	align : left;
+}
+
+form#loginForm {
+	display:block;
+}
+
+form#registerForm, form#dataForm, form#listForm, form#menuForm {
+	display:none;
 }

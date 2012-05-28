@@ -5,18 +5,18 @@ $(document).ready(function(){
 
 function setEventHandler()
 {
-	$("div#updateButton").click(todoListRequest);
-	$("div#searchMenuButton").click(openSearchForm);
+	$("#menuButton").unbind("click");
+	$("#menuButton").bind("click", openSearchForm);
 
 	// 入力欄のカレンダー
-	$("#inputDeadline").datepicker({
+	$("#inputDeadlineField").datepicker({
 				dateFormat: 'yy-mm-dd', 
 				minDate: '+0d',
 				showOtherMonths: true,
 				showOn: 'button'
 			});
 	// TODOリストの期日欄のカレンダー
-	$("input#deadline").datepicker({
+	$("#outputDeadlineField").datepicker({
 				dateFormat: 'yy-mm-dd', 
 				minDate: '+0d',
 				showOtherMonths: true,
@@ -24,30 +24,44 @@ function setEventHandler()
 			});
 
 	// 入力欄のフォーカスイベント
-	$('input#inputVwords').focus(todoInputFocus).blur(todoInputBlur);
-	$('input#inputOwords').focus(todoInputFocus).blur(todoInputBlur);
+	$('#inputVwordsField').unbind("focus").unbind("blur");
+	$('#inputOwordsField').unbind("focus").unbind("blur");
+	$('#inputVwordsField').bind("focus", inputFieldFocus).bind("blur",inputFieldBlur);
+	$('#inputOwordsField').bind("focus", inputFieldFocus).bind("blur",inputFieldBlur);
+
+	// TODO検索ボタンのクリックイベント
+	$("#searchSubmitButton").unbind("click");
+	$("#searchSubmitButton").bind("click", todoListRequest);
 
 	// TODO追加ボタンのクリックイベント
-	$('div#inputSubmit').click(todoAddRequest);
+	$('#inputSubmitButton').unbind("click");
+	$('#inputSubmitButton').bind("click", todoAddRequest);
 
 	// TODOの期日欄変更イベント
-	$("input#deadline").change(todoUpdateDeadlineRequest);
+	$("#outputDeadlineField").unbind("change");
+	$("#outputDeadlineField").bind("change", todoUpdateDeadlineRequest);
 
 	// TODOの変更イベント
-	$("input#todo").change(todoUpdateSentenceRequest);
+	$("#outputSentenceField").unbind("change");
+	$("#outputSentenceField").bind("change", todoUpdateSentenceRequest);
 
 	// 完了・未完ボタンのクリックイベント
-	$('div#finished').click(todoUpdateFinishedRequest);
+	$('#outputFinishedButton').unbind("click");
+	$('#outputFinishedButton').bind("click", todoUpdateFinishedRequest);
 
 	// ユーザ登録フォームへ切り替えるボタンのクリックイベント
-	$('button#changeForm[value="register"]').click(changeFormToRegister);
+	$('#changeButton[value="register"]').unbind("click");
+	$('#changeButton[value="register"]').bind("click", changeFormToRegister);
 
 	// ログインフォームへ切り替えるボタンのクリックイベント
-	$('button#changeForm[value="login"]').click(changeFormToLogin);
+	$('#changeButton[value="login"]').unbind("click");
+	$('#changeButton[value="login"]').bind("click", changeFormToLogin);
 
 	// ユーザ登録フォームのサブミットイベント
-	$('form#registerForm').submit(registerRequest);
+	$('#registerForm').unbind("submit");
+	$('#registerForm').bind("submit", registerRequest);
 
 	// ログインフォームのサブミットイベント
-	$('form#loginForm').submit(loginRequest);
+	$('#loginForm').unbind("submit");
+	$('#loginForm').bind("submit", loginRequest);
 }

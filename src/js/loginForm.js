@@ -1,66 +1,41 @@
-// ログインフォームのサブミットイベント
-function loginRequest() 
-{
-	var loginForm = this;
-	var userid = $(loginForm).children('#useridForm').attr('value'); // get username
-	var passwd = $(loginForm).children('#passwdForm').attr('value'); // get password
-
-	loginFormFixedOn(loginForm);
-	if (userid && passwd) {
-		$.ajax({
-			type: "POST",
-			url: "./login.cgi",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			dataType: "xml",
-			data: "userid=" + userid + "&passwd=" + passwd,
-			error:  function (XMLHttpRequest, textStatus, errorThrown) {
-					loginConnectError(loginForm, XMLHttpRequest, textStatus, errorThrown);
-				},
-       			success: function (xmlData) {
-					loginResponse(loginForm, xmlData);
-				}
-		}); // ajax
-	}
-	else {
-		loginNotEnteredError(loginForm);
-	}
-
-	return false; // 実際にsubmitするのを防ぐ
-}
-
 // 入力不可の有効化
-function loginFormFixedOn(loginForm)
+function loginFormFixedOn()
 {
+	var loginForm = $('#loginForm');
 	$(loginForm).children("#decisionButton").attr("disabled","disabed");
-	$(loginForm).children('#useridForm').attr("disabled","disabed");
-	$(loginForm).children('#passwdForm').attr("disabled","disabed");
+	$(loginForm).children('#useridField').attr("disabled","disabed");
+	$(loginForm).children('#passwdField').attr("disabled","disabed");
 }
 
 // 入力不可の解除
-function loginFormFixedOff(loginForm)
+function loginFormFixedOff()
 {
+	var loginForm = $('#loginForm');
 	$(loginForm).children("#decisionButton").removeAttr("disabled");
-	$(loginForm).children('#useridForm').removeAttr("disabled");
-	$(loginForm).children('#passwdForm').removeAttr("disabled");
+	$(loginForm).children('#useridField').removeAttr("disabled");
+	$(loginForm).children('#passwdField').removeAttr("disabled");
 }
 
 // 接続エラー
-function loginConnectError(loginForm, XMLHttpRequest, textStatus, errorThrown){
-	$(loginForm).children('#connectionResult').text("通信に失敗しました");
+function loginConnectError(XMLHttpRequest, textStatus, errorThrown){
+	var loginForm = $('#loginForm');
+	$(loginForm).children('#resultField').text("通信に失敗しました");
 //		+"responseText: " + XMLHttpRequest.responseText 
 //		+ ", textStatus: " + textStatus 
 //		+ ", errorThrown: " + errorThrown);
-	loginFormFixedOff(loginForm);
+	loginFormFixedOff();
 }
 
 // 未入力によるエラー
-function loginNotEnteredError(loginForm) {
-	$(loginForm).children('#connectionResult').text("ユーザ名とパスワードを入力してください。");
-	loginFormFixedOff(loginForm);
+function loginNotEnteredError() {
+	var loginForm = $('#loginForm');
+	$(loginForm).children('#resultField').text("ユーザ名とパスワードを入力してください。");
+	loginFormFixedOff();
 }
 
 // ログイン処理の結果
-function loginResponse(loginForm, xmlData){
+function loginResponse(xmlData){
+	var loginForm = $('#loginForm');
 	var lists  = $(xmlData).children('lists');
 	var result = $(lists).children('result');
 	var error  = $(lists).children('error');
@@ -69,8 +44,8 @@ function loginResponse(loginForm, xmlData){
 		var listForm = $('#listForm');
 		var dataForm = $('#dataForm');
 		var menuForm = $('#menuForm');
-		var userid = $(loginForm).children('#useridForm').attr('value'); // get username
-		var passwd = $(loginForm).children('#passwdForm').attr('value'); // get password
+		var userid = $(loginForm).children('#useridField').attr('value'); // get username
+		var passwd = $(loginForm).children('#passwdField').attr('value'); // get password
 		
 		$(loginForm).hide();
 		$(listForm).fadeIn();
@@ -79,9 +54,9 @@ function loginResponse(loginForm, xmlData){
 		$(dataForm).children('#passwdData').attr('value', passwd);
 		todoListRequest();
 	} else {
-		$(loginForm).children("#connectionResult").text($(error).text());
+		$(loginForm).children("#resultField").text($(error).text());
 	}
-	loginFormFixedOff(loginForm);
+	loginFormFixedOff();
 } 
 
 // ユーザ登録フォームへ切り替えるボタンのクリック
@@ -93,7 +68,7 @@ function changeFormToRegister()
 
 	$(loginForm).hide();
 	$(registerForm).css("display", "block");
-	$(registerForm).children('div#connectionResult').text("");
-	registerFormFixedOff(registerForm);
+	$(registerForm).children('#resultField').text("");
+	registerFormFixedOff();
 	$(registerForm).fadeIn();
 }
