@@ -1,16 +1,18 @@
 package mysql;
 
+use utf8;
+use Encode; 
+use DBI qw(:sql_types);
 
 sub init {
     my ($dbname, $user, $passwd, $host) = @_;
     my $dbh = undef;
-    
+
     eval {
-	$dbh = DBI -> connect ("DBI:mysql:$dbname:$host",$user,$passwd);
+	$dbh = DBI->connect("DBI:mysql:$dbname:$host",$user,$passwd);
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 	
     return $dbh;
@@ -47,8 +49,7 @@ sub select {
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
     print $items[0]{"id"};
 
@@ -71,13 +72,12 @@ sub insert {
 	for (my $i=0; $i<$num_values; $i++) {
 	    $sth->bind_param($i+1, $values[$i], $types[$i]);
 	}
-	$sth->execute();
+	$sth->execute() or die(DBI::errstr);
 	$insert_id = $sth->{mysql_insertid};
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return $insert_id;
@@ -98,12 +98,11 @@ sub delete {
 	for (my $i=0; $i<$num_values; $i++) {
 	    $sth->bind_param($i+1, $values[$i], $types[$i]);
 	}
-	$sth->execute;
+	$sth->execute() or die(DBI::errstr);
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return 1;
@@ -124,42 +123,41 @@ sub update {
 	for (my $i=0; $i<$num_values; $i++) {
 	    $sth->bind_param($i+1, $values[$i], $types[$i]);
 	}
-	$sth->execute;
+	$sth->execute() or die(DBI::errstr);
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return 1;
 }
 
 sub exist_record {
-    my ($dbh, $table, $column, $where, $values_lp, $types_lp) = @_;
+    my ($dbh, $table, $where, $values_lp, $types_lp) = @_;
     my @values = @$values_lp;
     my @types  = @$types_lp;
-    my $num_rows = 0;
+    my $num_values = @values;
+    my $exist  = 0;
 
     if (!defined($dbh)) {
 	return 0;
     }
 
     eval {    
-	my $sth = $dbh->prepare("SELECT $column FROM $table WHERE $where");
+	my $sth = $dbh->prepare("SELECT COUNT(*) FROM $table WHERE $where");
 	for (my $i=0; $i<$num_values; $i++) {
 	    $sth->bind_param($i+1, $values[$i], $types[$i]);
 	}
-	$sth->execute();
-	$num_rows = $sth->rows();
+	$sth->execute() or die(DBI::errstr);
+	($exist) = $sth->fetchrow_array;
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
-    return $num_rows;
+    return $exist;
 }
 
 sub num_cols {
@@ -171,13 +169,12 @@ sub num_cols {
 
     eval {
 	my $sth = $dbh->prepare("SELECT * FROM $table");
-	$sth->execute;
+	$sth->execute or die(DBI::errstr);
 	my $num_column = $sth->{'NUM_OF_FIELDS'};
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return $num_column;
@@ -192,13 +189,12 @@ sub num_rows {
 
     eval {
 	my $sth = $dbh->prepare("SELECT * FROM $table");
-	$sth->execute;
+	$sth->execute() or die(DBI::errstr);
 	my $num_rows = $sth->rows;
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return $num_rows;
@@ -214,15 +210,14 @@ sub colList {
 
     eval {
 	my $sth = $dbh->prepare("SELECT * FROM $table");
-	$sth->execute;
+	$sth->execute or die(DBI::errstr);
 	for (my $i=0; $i<$sth->{'NUM_OF_FIELDS'}; $i++) {
 	    @names[$i] = $sth->{'NAME'}->[$i];
 	}
 	$sth->finish;
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
     return @names;
@@ -242,7 +237,7 @@ sub rowList {
 	foreach my $name (@columns) {
 	    if ($name eq $column) {
 		$sth = $dbh->prepare("SELECT $column FROM $table");
-		$sth->execute();
+		$sth->execute() or die(DBI::errstr);
 		break;
 	    }
 	}
@@ -255,8 +250,7 @@ sub rowList {
 	} 
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
     
     return @items;
@@ -271,11 +265,11 @@ sub close {
 	}
     };
     if ($@) {
-	print "Exception:$@";
-	exit(1);
+	die "$@";
     }
 
 }
 
 1;
+
 
