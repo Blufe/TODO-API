@@ -92,7 +92,7 @@ input#changeForm_register, input#changeForm_login {
 }
 
 form#loginForm, input#changeForm_register {
-	display:block;
+#	display:block;
 }
 
 form#registerForm, input#changeForm_login {
