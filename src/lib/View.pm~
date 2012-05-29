@@ -126,9 +126,10 @@ sub xml_searchSuccess {
     print '</result>';
     foreach (@sentenceList) {
 	%sentence = %{$_};
+	my $todo = &Encode::decode("UTF-8", $self->{"CGI"}->escapeHTML($sentence{'todo'}));
 	print "<data>";
 	print "<sentenceID>$sentence{'sentenceID'}</sentenceID>";
-	print "<todo>$sentence{'todo_for_html'}</todo>";
+	print "<todo>$todo</todo>";
 	print "<creation_date>$sentence{'creation_date'}</creation_date>";
 	print "<deadline>$sentence{'deadline'}</deadline>";
 	print "<finished>$sentence{'finished'}</finished>";

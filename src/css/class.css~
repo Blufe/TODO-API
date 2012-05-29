@@ -36,12 +36,3 @@
   border-left: 20px solid #d00;
 }
 
-.outputDeadlineField {
-	width : 110px;
-
-	border : none;
-
-	color            : #eee;
-	background-color : rgba(0,0,0,0); 
-	font-size        : 20px;
-}

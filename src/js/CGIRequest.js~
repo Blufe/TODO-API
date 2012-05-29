@@ -68,10 +68,10 @@ function todoListRequest(words, date_a, date_b, finished)
 
 	// 検索情報
 	var s_words    = encodeURIComponent($(searchData).children('#wordsData').attr('value'));
-	var s_date_a   = $(searchData).children('#date_aData').attr('value');
-	var s_date_b   = $(searchData).children('#date_bData').attr('value');
-	var s_finished = $(searchData).children('#finishedData').attr('value');
-	var s_order    = $(searchData).children('#orderData').attr('value');
+	var s_date_a   = encodeURIComponent($(searchData).children('#date_aData').attr('value'));
+	var s_date_b   = encodeURIComponent($(searchData).children('#date_bData').attr('value'));
+	var s_finished = encodeURIComponent($(searchData).children('#finishedData').attr('value'));
+	var s_order    = encodeURIComponent($(searchData).children('#orderData').attr('value'));
 
 	var sendData =  "mode=SEARCH" + 
 			"&userid="  + userid + "&passwd="   + passwd   +
@@ -105,10 +105,10 @@ function todoAddRequest()
 
 	// 検索情報
 	var s_words    = encodeURIComponent($(searchData).children('#wordsData').attr('value'));
-	var s_date_a   = $(searchData).children('#date_aData').attr('value');
-	var s_date_b   = $(searchData).children('#date_bData').attr('value');
-	var s_finished = $(searchData).children('#finishedData').attr('value');
-	var s_order    = $(searchData).children('#orderData').attr('value');
+	var s_date_a   = encodeURIComponent($(searchData).children('#date_aData').attr('value'));
+	var s_date_b   = encodeURIComponent($(searchData).children('#date_bData').attr('value'));
+	var s_finished = encodeURIComponent($(searchData).children('#finishedData').attr('value'));
+	var s_order    = encodeURIComponent($(searchData).children('#orderData').attr('value'));
 
 	// 入力フォーム情報
 	var Owords   = $(inputForm).children('#inputOwordsField').attr('value');
@@ -148,6 +148,7 @@ function todoUpdateFinishedRequest()
 	var dataForm   = $('#dataForm');
 	var listForm   = $('#listForm');
 	var searchData = $(dataForm).children('#searchData');
+	var bgcolor = $(finishedButton).css("background-color");
 
 	// ユーザ情報
 	var userid = encodeURIComponent($(dataForm).children('#useridData').attr('value')); // get username
@@ -155,22 +156,21 @@ function todoUpdateFinishedRequest()
 
 	// 検索情報
 	var s_words    = encodeURIComponent($(searchData).children('#wordsData').attr('value'));
-	var s_date_a   = $(searchData).children('#date_aData').attr('value');
-	var s_date_b   = $(searchData).children('#date_bData').attr('value');
-	var s_finished = $(searchData).children('#finishedData').attr('value');
-	var s_order    = $(searchData).children('#orderData').attr('value');
+	var s_date_a   = encodeURIComponent($(searchData).children('#date_aData').attr('value'));
+	var s_date_b   = encodeURIComponent($(searchData).children('#date_bData').attr('value'));
+	var s_finished = encodeURIComponent($(searchData).children('#finishedData').attr('value'));
+	var s_order    = encodeURIComponent($(searchData).children('#orderData').attr('value'));
 
 	// 変更情報
-	var sentenceID = $(finishedButton).parent().attr('value');
-	var finished   = $(finishedButton).attr('value');
-	if (finished == "false") {
+	var sentenceID = encodeURIComponent($(finishedButton).parent().attr('value'));
+	var finished   = "";
+	if (bgcolor == "rgba(0, 255, 0, 0.25)") {
 		$(finishedButton).css("background-color", "rgba(255,0,0,0.25)");
 		finished = "true";
 	} else {
 		$(finishedButton).css("background-color", "rgba(0,255,0,0.25)");
 		finished = "false";
 	}
-	$(finishedButton).attr('value', finished);
 
 	// 送信内容
 	var sendData =  "mode=UPDATE"  + "&chmode=FINISHED" +
@@ -203,14 +203,14 @@ function todoUpdateDeadlineRequest()
 
 	// 検索情報
 	var s_words    = encodeURIComponent($(searchData).children('#wordsData').attr('value'));
-	var s_date_a   = $(searchData).children('#date_aData').attr('value');
-	var s_date_b   = $(searchData).children('#date_bData').attr('value');
-	var s_finished = $(searchData).children('#finishedData').attr('value');
-	var s_order    = $(searchData).children('#orderData').attr('value');
+	var s_date_a   = encodeURIComponent($(searchData).children('#date_aData').attr('value'));
+	var s_date_b   = encodeURIComponent($(searchData).children('#date_bData').attr('value'));
+	var s_finished = encodeURIComponent($(searchData).children('#finishedData').attr('value'));
+	var s_order    = encodeURIComponent($(searchData).children('#orderData').attr('value'));
 
 	// 変更情報
-	var sentenceID = $(deadlineCal).parent().parent().parent().parent().attr('value');
-	var deadline   = $(deadlineCal).attr('value');
+	var sentenceID = encodeURIComponent($(deadlineCal).parent().parent().parent().parent().attr('value'));
+	var deadline   = encodeURIComponent($(deadlineCal).attr('value'));
 
 	// 送信内容
 	var sendData =  "mode=UPDATE"  +  "&chmode=DEADLINE" +
@@ -243,13 +243,13 @@ function todoUpdateSentenceRequest()
 
 	// 検索情報
 	var s_words    = encodeURIComponent($(searchData).children('#wordsData').attr('value'));
-	var s_date_a   = $(searchData).children('#date_aData').attr('value');
-	var s_date_b   = $(searchData).children('#date_bData').attr('value');
-	var s_finished = $(searchData).children('#finishedData').attr('value');
-	var s_order    = $(searchData).children('#orderData').attr('value');
+	var s_date_a   = encodeURIComponent($(searchData).children('#date_aData').attr('value'));
+	var s_date_b   = encodeURIComponent($(searchData).children('#date_bData').attr('value'));
+	var s_finished = encodeURIComponent($(searchData).children('#finishedData').attr('value'));
+	var s_order    = encodeURIComponent($(searchData).children('#orderData').attr('value'));
 
 	// 変更情報
-	var sentenceID = $(sentenceForm).parent().parent().parent().attr('value');
+	var sentenceID = encodeURIComponent($(sentenceForm).parent().parent().parent().attr('value'));
 	var sentence   = encodeURIComponent($(sentenceForm).attr('value'));
 
 	// 送信内容

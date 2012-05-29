@@ -118,7 +118,7 @@ input#inputDeadlineField {
 	font-size        : 25px;
 }
 
-div#inputSubmitButton {
+div#inputSubmitButton, div#searchSubmitButton {
 	height   : 30px;
 	width    : 80px;
 	overflow : hidden;

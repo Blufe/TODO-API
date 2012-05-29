@@ -67,6 +67,10 @@ if ($model->connect()) {
     }
 }
 
+#print '<?xml version="1.0" encoding="utf-8"?>';
+#print "<test>".(&Encode::decode("UTF-8", $CGIpm->escapeHTML($Owords.$Vwords)))."</test>";
+#exit 0;
+
 if ($login) {
     eval {
 	switch ($mode) {
@@ -136,6 +140,9 @@ if ($login) {
     if ($@) {
 	$view->xml_actionFailure($model->error());
     } else {
+	foreach (@sentenceList) {
+	    $_->{'todo_for_html'} = &escapeSTRforHTMLthroughJS($CGIpm, $_->{'todo'});
+	}
 	$view->xml_searchSuccess(\@sentenceList);
     }
 } else {
@@ -144,3 +151,11 @@ if ($login) {
 
 exit 0;
 
+sub escapeSTRforHTMLthroughJS {
+    my ($cgi, $str_origin) = @_;
+
+    my $str_for_js = &Encode::decode("UTF-8", $cgi->escapeHTML($str_origin));
+    (my $str_for_html = $str_for_js) =~ s/\047/\&amp;\#39;/g;
+
+    return $str_for_html;
+}

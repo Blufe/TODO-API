@@ -1,0 +1,73 @@
+// イベントハンドル
+$(document).ready(function(){
+	setEventHandler();
+});
+
+function setEventHandler()
+{
+	$("#menuButton").unbind("click");
+	$("#menuButton").bind("click", openSearchForm);
+
+
+	// 入力欄のカレンダー
+	$("#inputDeadlineField").datepicker({
+		dateFormat: 'yy-mm-dd',
+		minDate: '+0d',
+		showOtherMonths: true,
+		showOn: 'button'
+	});
+
+	// カレンダー
+	$('*').find(".outputDeadlineField").each(function(){ 
+		$(this).attr('class', $(this).parent().parent().parent().parent().attr("value")); 
+		
+		$(this).datepicker({
+			dateFormat: 'yy-mm-dd', 
+			minDate: '+0d',
+			showOtherMonths: true,
+			showOn: 'button'
+		});
+	 });
+
+	// 入力欄のフォーカスイベント
+	$('#inputVwordsField').unbind("focus").unbind("blur");
+	$('#inputOwordsField').unbind("focus").unbind("blur");
+	$('#inputVwordsField').bind("focus", inputFieldFocus).bind("blur",inputFieldBlur);
+	$('#inputOwordsField').bind("focus", inputFieldFocus).bind("blur",inputFieldBlur);
+
+	// TODO検索ボタンのクリックイベント
+	$("#searchSubmitButton").unbind("click");
+	$("#searchSubmitButton").bind("click", todoListRequest);
+
+	// TODO追加ボタンのクリックイベント
+	$('*').find('#inputSubmitButton').each(function(){ $(this).unbind("click"); });
+	$('*').find('#inputSubmitButton').each(function(){ $(this).bind("click", todoAddRequest); });
+
+	// TODOの期日欄変更イベント
+	$('*').find('#outputDeadlineField').each(function(){ $(this).unbind("change"); });
+	$('*').find('#outputDeadlineField').each(function(){ $(this).bind("change", todoUpdateDeadlineRequest); });
+
+	// TODOの変更イベント
+	$('*').find('#outputSentenceField').each(function(){ $(this).unbind("change"); });
+	$('*').find('#outputSentenceField').each(function(){ $(this).bind("change", todoUpdateSentenceRequest); });
+
+	// 完了・未完ボタンのクリックイベント
+	$('*').find('#outputFinishedButton').each(function(){ $(this).unbind("click"); });
+	$('*').find('#outputFinishedButton').each(function(){ $(this).bind("click", todoUpdateFinishedRequest); });
+
+	// ユーザ登録フォームへ切り替えるボタンのクリックイベント
+	$('*').find('#changeButton[value="register"]').each(function(){ $(this).unbind("click"); });
+	$('*').find('#changeButton[value="register"]').each(function(){ $(this).bind("click", changeFormToRegister); });
+
+	// ログインフォームへ切り替えるボタンのクリックイベント
+	$('*').find('#changeButton[value="login"]').each(function(){ $(this).unbind("click"); });
+	$('*').find('#changeButton[value="login"]').each(function(){ $(this).bind("click", changeFormToLogin); });
+
+	// ユーザ登録フォームのサブミットイベント
+	$('*').find('#registerForm').each(function(){ $(this).unbind("submit"); });
+	$('*').find('#registerForm').each(function(){ $(this).bind("submit", registerRequest); });
+
+	// ログインフォームのサブミットイベント
+	$('*').find('#loginForm').each(function(){ $(this).unbind("submit"); });
+	$('*').find('#loginForm').each(function(){ $(this).bind("submit", loginRequest); });
+}
