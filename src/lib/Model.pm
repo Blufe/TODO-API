@@ -675,19 +675,19 @@ sub get_sentenceList {
 	}
 	if (@words) {
 	    foreach (@words) {
-		if ($_) { 
-		    $values[$count] = $_.'%';
+		if ($_) {
+		    $values[$count] = '%'.$_.'%';
 		    $types [$count] = SQL_VARCHAR;
-		    $where .= " AND ($table.text LIKE '?')";
+		    $where .= " AND ($table.todo LIKE ?)";
 		    $count++;
 		}
 	    }
 	}
 	if ($order) {
 	    if ($order eq "asc") {
-		$where .= "ORDER BY $table.finished DESC, $table.creation_date ASC, $table.sentenceID ASC";
+		$where .= " ORDER BY $table.finished DESC, $table.creation_date ASC, $table.sentenceID ASC";
 	    } elsif ($order eq "desc") {
-		$where .= "ORDER BY $table.finished ASC, $table.creation_date DESC, $table.sentenceID DESC";
+		$where .= " ORDER BY $table.finished ASC, $table.creation_date DESC, $table.sentenceID DESC";
 	    }
 	}
 	eval {

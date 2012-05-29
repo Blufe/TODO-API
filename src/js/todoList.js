@@ -1,6 +1,6 @@
 // 接続エラー
 function todoConnectError(XMLHttpRequest, textStatus, errorThrown){
-	todoErrorWrite("通信に失敗しました");
+	openErrorForm("通信に失敗しました");
 }
 
 // TODOリスト取得処理の結果
@@ -12,11 +12,10 @@ function todoListResponse(xmlData){
 
 	if ($(result).text() == "success") {
 		todoListWrite(data);
+		setEventHandler();
 	} else {
-		todoErrorWrite($(error).text());
+		openErrorForm($(error).text());
 	}
-
-	setEventHandler();
 } 
 
 // TODOリストを表示する
@@ -26,6 +25,7 @@ function todoListWrite(xmlData)
 	$(listForm).html("<ul class='line'></ul>");
 	var lines = $(listForm).children('.line');
 
+	todoErrorWrite(lines);
 	todoSearchForm(lines);
 	todoInputForm(lines);
 	$(xmlData).each(function(){
@@ -95,21 +95,22 @@ function todoWrite(lines, sentenceID, todo, creation_date, deadline, finished)
 }
 
 // TODOリストのエラーを表示する
-function todoErrorWrite(text)
+function todoErrorWrite(lines)
 {
-	var listForm = $('#listForm');
-	$(listForm).html(
-		"<ul class='line'>" +
+	$(lines).prepend(
 		"<li>" +
 		"<div id='todoErrorField'>"  +
-		text +
 		"</div>" +
-		"</li>"  +
-		"</ul>"    
+		"</li>"
 	);
-	var lines = $(listForm).children('.line');
-	todoSearchForm(lines);
-	todoInputForm(lines);
+	$('#todoErrorField').parent().hide();
+}
+
+// エラーフォームを開く
+function openErrorForm(text)
+{
+	$('#todoErrorField').text(text);
+	$('#todoErrorField').parent().fadeIn();
 	alert(text);
 }
 
@@ -151,7 +152,7 @@ function todoHoverIn() {
 }
 function todoHoverOut() {}
 
-// 検索フォームを表示する検索ボタン
+// 検索フォームを表示する関数
 function openSearchForm() {
 	var status = $('#menuForm').children('#menuButton').attr('value');
 	var dataForm    = $('#dataForm');
@@ -198,6 +199,21 @@ function openSearchForm() {
 		$('#menuForm').children('#menuButton').text('－');
 		$('#todoSearchField').parent().fadeIn();
 	}
+}
+
+// 検索フォームをクリアする関数
+function clearSearchForm() {
+	var dataForm    = $('#dataForm');
+	var searchData  = $(dataForm).children('#searchData');
+	var searchField = $('#todoSearchField');	
+
+	$(searchData).children('#wordsData').attr('value', '');
+	$(searchData).children('#date_aData').attr('value', '');
+	$(searchData).children('#date_bData').attr('value', '');
+	$(searchData).children('#finishedData').attr('value', 'false');
+	$(searchData).children('#orderData').attr('value', 'desc');
+
+	todoListRequest();
 }
 
 // 検索欄のフォーカス

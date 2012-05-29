@@ -73,13 +73,19 @@ function todoListRequest(words, date_a, date_b, finished)
 	var s_finished = $(searchData).children('#finishedData').attr('value');
 	var s_order    = $(searchData).children('#orderData').attr('value');
 
+	if (s_date_a === "いつまで？") {
+		s_date_a = "";
+	}
+	if (s_date_b === "いつから？") {
+		s_date_b = "";
+	}
+
 	var sendData =  "mode=SEARCH" + 
 			"&userid="  + userid + "&passwd="   + passwd   +
 			"&s_words=" + s_words  + "&s_date_a=" + s_date_a + "&s_date_b=" + s_date_b + "&s_finished=" + s_finished + "&s_order=" + s_order;
 	var cgiPath     = "./todo.cgi";
 	var successFunc = todoListResponse;
 	var errorFunc   = todoConnectError;
-
 
 	if (userid && passwd) {
 		xmlCGIRequest(cgiPath, sendData, successFunc, errorFunc);

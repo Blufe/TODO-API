@@ -5,8 +5,12 @@ $(document).ready(function(){
 
 function setEventHandler()
 {
+	// 検索フォームを開くボタンのクリックイベント
 	$("#menuButton").unbind("click");
 	$("#menuButton").bind("click", openSearchForm);
+	// 検索フォームのクリア
+	$("#clearButton").unbind("click");
+	$("#clearButton").bind("click", clearSearchForm);
 
 	// TODO追加入力欄のフォーカスイベント
 	$('#inputVwordsField').bind("focus", inputFieldFocus).bind("blur",inputFieldBlur);
