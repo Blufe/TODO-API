@@ -145,8 +145,8 @@ function todoHoverIn() {
 			showOtherMonths: true,
 			showOn: 'button'/*,
 			onClose: function(dateText, inst) { 
-				$(this).datepicker('destroy');*/
-			}
+				$(this).datepicker('destroy');
+			}*/
 		});
 	});
 }

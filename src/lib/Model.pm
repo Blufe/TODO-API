@@ -662,13 +662,17 @@ sub get_sentenceList {
 	    if ($date_b =~ /^\d{8}$/) {
 		$values[$count] = $date_b;
 		$types [$count] = SQL_VARCHAR;
-		$where .= "AND ($table.deadline>=?)";
+		$values[$count] = $date_b;
+		$types [$count] = SQL_VARCHAR;
+		$where .= "AND (($table.creation_date>=?) OR ($table.deadline>=?))";
 		$count++;
 	    }
 	    if ($date_a =~ /^\d{8}$/) {
 		$values[$count] = $date_a;
 		$types [$count] = SQL_VARCHAR;
-		$where .= "AND ($table.deadline<=?)";
+		$values[$count] = $date_a;
+		$types [$count] = SQL_VARCHAR;
+		$where .= "AND (($table.creation_date<=?) OR ($table.deadline<=?))";
 		$count++;
 	    }
 	    $where .= ")";
