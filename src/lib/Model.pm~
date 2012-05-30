@@ -80,8 +80,8 @@ sub error {
     my ($errno, $errmsg) = @_;
 
     if ($errno) {
-	$self->{"errno"} = $errno;
-	$self->{"error"} = encode('utf-8', sprintf($ERRORS[$self->{"errno"}]));
+	$self->{"errno"} = encode('utf-8', $errno);
+	$self->{"error"} = sprintf($ERRORS[$self->{"errno"}]);
 	if ($DEBUG) {
 	    if ($@) {
 		croak $@;

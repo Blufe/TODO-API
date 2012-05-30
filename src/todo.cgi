@@ -57,6 +57,7 @@ my $view  = new View($CGIpm);
 my @sentenceList = undef;
 my $login   = 0;
 
+
 print $CGIpm->header({-type => 'text/xml','-charset'=>'UTF-8'});
 
 # データベース接続
@@ -106,7 +107,7 @@ if ($login) {
 		# TODOの編集
 		switch ($chmode) {
 		    case "DEADLINE" {
-			$deadline =~ s/\s+|-+//g;
+			$deadline =~ s/\s+|\-+//g;
 			if ($deadline) {
 			    $model->set_sentence_deadline($userid, $sentenceID, $deadline);
 			    (!$model->errno()) or die $model->error();

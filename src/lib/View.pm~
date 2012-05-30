@@ -80,7 +80,7 @@ sub xml_loginNCK {
     print "error";
     print '</result>';
     print '<error>';
-    print encode('utf-8', "$errmsg");
+    print "$errmsg";
     print '</error>';
     &xml_lists_end($self);
 }
@@ -108,7 +108,7 @@ sub xml_registerNCK {
     print "error";
     print '</result>';
     print '<error>';
-    print encode('utf-8', "$errmsg");
+    print "$errmsg";
     print '</error>';
     &xml_lists_end($self);
 }
@@ -117,7 +117,7 @@ sub xml_searchSuccess {
     my $self = shift;
     my ($sentenceList_lp) = @_;
     my @sentenceList = @$sentenceList_lp;
-    my %sentence = {};
+    my %sentence = undef;
     
     &xml_header($self);
     &xml_lists_start($self);
@@ -128,7 +128,7 @@ sub xml_searchSuccess {
 	%sentence = %{$_};
 	print "<data>";
 	print "<sentenceID>$sentence{'sentenceID'}</sentenceID>";
-	print encode('utf-8', "<todo>$sentence{'todo_for_html'}</todo>");
+	print "<todo>$sentence{'todo_for_html'}</todo>";
 	print "<creation_date>$sentence{'creation_date'}</creation_date>";
 	print "<deadline>$sentence{'deadline'}</deadline>";
 	print "<finished>$sentence{'finished'}</finished>";
@@ -147,7 +147,7 @@ sub xml_actionFailure {
     print "error";
     print '</result>';
     print '<error>';
-    print encode('utf-8', "$errmsg");
+    print "$errmsg";
     print '</error>';
     &xml_lists_end($self);
 }
